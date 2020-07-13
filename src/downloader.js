@@ -1,5 +1,6 @@
 const exec = require('child_process').exec;
 const app = require('electron').remote.app
+const path = require('path')
 
 
 function download(url){
@@ -26,7 +27,7 @@ function download(url){
 }
 
 function getPath(){
-    // Get path of app
-    const path = app.getAppPath().toString()
-    return path.replace(/\\/g, "/");
+    // Put downloaded video on desktop
+    // TODO Allow user to select path
+    return path.join(require('os').homedir(), 'Desktop').replace(/\\/g, "/");
 }

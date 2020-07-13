@@ -1,7 +1,9 @@
 const { app, BrowserWindow } = require('electron');
 const path = require('path');
-require('electron-reload')(__dirname);
-
+const isDev = process.env.APP_DEV ? (process.env.APP_DEV.trim() === "true") : false;
+if(isDev){
+    require('electron-reload')(__dirname);
+}
 
 if (require('electron-squirrel-startup')) {
     app.quit();
