@@ -1,12 +1,72 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="UTF-8">
-    <title>Hello World!</title>
-    <link rel="stylesheet" href="index.css">
-  </head>
-  <body>
-    <h1>💖 Hello World!</h1>
-    <p>Welcome to your Electron application.</p>
-  </body>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Video Downloader</title>
+        <script src="downloader.js"></script>
+        <link rel="stylesheet" type="text/css" href="index.css">
+    </head>
+
+    <body>
+
+        <div ondragenter="handleDragDropEvent(event)"
+             ondragover="handleDragDropEvent(event)"
+             ondrop="handleDragDropEvent(event)">
+
+            <p>Url of Video: </p>
+
+            <label for="urlInput">
+                <textarea id="urlInput" name="w3review" rows="6" cols="50" spellcheck="false"></textarea>
+            </label>
+            <br/><br/>
+            <input type="button" id="btnDownload" value="Download" onclick="validateUrl(document.getElementById('urlInput').value)" />
+            <br/><br/>
+            <label for="logger">
+                <textarea id="logger" name="w3review" rows="12" cols="90" spellcheck="false" disabled></textarea>
+            </label>
+        </div>
+
+    </body>
+
+    <script type="text/javascript">
+
+        function handleDragDropEvent(oEvent) {
+            // Allow user to drag and drop url into the textarea.
+            switch(oEvent.type) {
+                case "dragover":
+                case "dragenter":
+                    oEvent.returnValue = false;
+                    break;
+                case "drop":
+                    document.getElementById("urlInput").value = oEvent.dataTransfer.getData("URL");
+            }
+        }
+
+        function validateUrl(url){
+            // Basic validation to check if url is valid.
+            // Attempt download video if it is an url.
+            const res = url.match(/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_+.~#?&/=]*)/g);
+            if(res != null){
+                download(url);
+            }
+        }
+
+        function getOutputDestination(){
+            // Get the path of the app as the output folder.
+            return getPath();
+        }
+
+        (function () {
+            // Hijack console.log() behaviour to reroute cmd output to textarea.
+            const logger = document.getElementById('logger');
+            logger.innerHTML += "Destination folder: " + getOutputDestination() + "\n\n";
+            logger.innerHTML += "Log: \n\n";
+            console.log = function(message) {
+                logger.innerHTML += message + '&#10;';
+                document.getElementById("logger").scrollTop = document.getElementById("logger").scrollHeight
+            }
+        })();
+
+    </script>
+
 </html>
