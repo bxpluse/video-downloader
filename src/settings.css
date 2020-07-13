@@ -1,0 +1,9 @@
+.path {
+    margin-top: 1rem;
+}
+
+span {
+    width: 200px;
+    display: inline-block;
+    text-align: right;
+}

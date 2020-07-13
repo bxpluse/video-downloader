@@ -1,7 +1,6 @@
 body {
   font-family: Helvetica, serif;
-  margin: auto;
-  padding: 4rem;
+  padding: 2rem;
 }
 
 textarea {
@@ -9,5 +8,15 @@ textarea {
 }
 
 #logger {
+  font-size: 12px;
+}
+
+#gear {
+  font-size: 40px;
+  cursor: pointer;
+}
+
+#output {
+  margin-left: 2rem;
   font-size: 12px;
 }

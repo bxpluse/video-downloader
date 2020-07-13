@@ -1,7 +1,7 @@
 {
   "name": "video-downloader",
   "productName": "video-downloader",
-  "version": "1.0.0",
+  "version": "1.0.5",
   "description": "An easy to use electron gui for youtube-dl.",
   "main": "src/index.js",
   "scripts": {
@@ -46,6 +46,7 @@
   },
   "dependencies": {
     "electron-squirrel-startup": "^1.0.0",
+    "electron-store": "^5.2.0",
     "shelljs": "^0.8.4"
   },
   "devDependencies": {

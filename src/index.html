@@ -9,7 +9,9 @@
 
     <body>
 
-        <div ondragenter="handleDragDropEvent(event)"
+         <span id="gear" onclick="openSettings();">&#9881;</span>
+
+         <div ondragenter="handleDragDropEvent(event)"
              ondragover="handleDragDropEvent(event)"
              ondrop="handleDragDropEvent(event)">
 
@@ -20,11 +22,12 @@
             </label>
             <br/><br/>
             <input type="button" id="btnDownload" value="Download" onclick="validateUrl(document.getElementById('urlInput').value)" />
+             <span id="output"> </span>
             <br/><br/>
             <label for="logger">
                 <textarea id="logger" name="w3review" rows="12" cols="90" spellcheck="false" disabled></textarea>
             </label>
-        </div>
+         </div>
 
     </body>
 
@@ -46,20 +49,34 @@
             // Basic validation to check if url is valid.
             // Attempt download video if it is an url.
             const res = url.match(/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_+.~#?&/=]*)/g);
-            if(res != null){
-                download(url);
+
+            const Store = require('electron-store');
+            const store = new Store();
+
+            const ffmpeg = store.get("ffmpeg");
+            const ytdl = store.get("youtube-dl");
+            const dest = store.get("destination");
+
+            if(ffmpeg == null || ytdl == null || dest == null){
+                console.log("Click the gear and set all the paths.");
+            } else {
+                if (res != null) {
+                    console.log("Starting download ...\n");
+                    download(url);
+                } else {
+                    console.log("Url cannot be parsed. \n");
+                }
             }
         }
 
-        function getOutputDestination(){
-            // Get the path of the app as the output folder.
-            return getPath();
+        function setDestination(){
+            document.getElementById('output').innerText = "Output: " + getPath();
         }
 
         (function () {
             // Hijack console.log() behaviour to reroute cmd output to textarea.
+            setDestination()
             const logger = document.getElementById('logger');
-            logger.innerHTML += "Destination folder: " + getOutputDestination() + "\n\n";
             logger.innerHTML += "Log: \n\n";
             console.log = function(message) {
                 logger.innerHTML += message + '&#10;';

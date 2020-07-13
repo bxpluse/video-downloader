@@ -14,13 +14,15 @@ const createWindow = () => {
     const mainWindow = new BrowserWindow({
         width: 800,
         height: 600,
-        title: "My App",
+        title: "Video Downloader",
         resizable: false,
         webPreferences: {
             nodeIntegration: true
         }
     });
-    mainWindow.removeMenu()
+    if(!isDev){
+        mainWindow.removeMenu()
+    }
     mainWindow.loadFile(path.join(__dirname, 'index.html'));
 };
 
