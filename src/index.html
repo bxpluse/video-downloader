@@ -3,8 +3,10 @@
     <head>
         <meta charset="UTF-8">
         <title>Video Downloader</title>
-        <script src="downloader.js"></script>
         <link rel="stylesheet" type="text/css" href="index.css">
+        <link rel="stylesheet" href="lib/switch.css" />
+        <script src="downloader.js"></script>
+        <script src="lib/switch.js"></script>
     </head>
 
     <body>
@@ -21,8 +23,25 @@
                 <textarea id="urlInput" name="w3review" rows="6" cols="50" spellcheck="false"></textarea>
             </label>
             <br/><br/>
-            <input type="button" id="btnDownload" value="Download" onclick="validateUrl(document.getElementById('urlInput').value)" />
-             <span id="output"> </span>
+
+             <table style="width:70%">
+                 <tr>
+                     <td>
+                         <input type="button" id="btnDownload" value="Download" onclick="validateUrl(document.getElementById('urlInput').value)" />
+                     </td>
+                     <td>
+                         <div>
+                             <span>mp4</span>
+                             <input id="file-format" type="checkbox" class="checkbox-switch" />
+                             <span>mp3</span>
+                         </div>
+                     </td>
+                     <td>
+                         <span id="output"> </span>
+                     </td>
+                 </tr>
+             </table>
+
             <br/><br/>
             <label for="logger">
                 <textarea id="logger" name="w3review" rows="12" cols="90" spellcheck="false" disabled></textarea>
@@ -32,6 +51,8 @@
     </body>
 
     <script type="text/javascript">
+
+        let mp3Switch;
 
         function handleDragDropEvent(oEvent) {
             // Allow user to drag and drop url into the textarea.
@@ -62,7 +83,8 @@
             } else {
                 if (res != null) {
                     console.log("Starting download ...\n");
-                    download(url);
+                    const isMp3 = mp3Switch.getChecked();
+                    download(url, isMp3);
                 } else {
                     console.log("Url cannot be parsed. \n");
                 }
@@ -74,6 +96,15 @@
         }
 
         (function () {
+            // Set toggle for mp3 only
+            const el = document.querySelector('.checkbox-switch');
+            const options = {
+                size: 'small',
+                offSwitchColor: '#785bd9',
+                onSwitchColor: '#5bd7d9'
+            }
+            mp3Switch = new Switch(el, options);
+
             // Hijack console.log() behaviour to reroute cmd output to textarea.
             setDestination()
             const logger = document.getElementById('logger');

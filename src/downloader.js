@@ -63,7 +63,7 @@ function selectPath(id) {
 }
 
 
-function download(url){
+function download(url, isMp3){
     /* Attempts to download a video, and streams progress to logger */
 
     // Options to pass into command
@@ -73,10 +73,21 @@ function download(url){
         '--ffmpeg-location' : store.get("ffmpeg")
     }
 
+    if(isMp3){
+        options['-x'] = null;
+        options['--audio-format'] = 'mp3'
+    } else {
+        options['-f'] = 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/mp4'
+    }
+
     let command = 'youtube-dl ';
 
     for (const [key, value] of Object.entries(options)) {
-        command += key + " " + value + " ";
+        if(value == null){
+            command += key + " ";
+        } else {
+            command += key + " " + value + " ";
+        }
     }
     command += url
 
