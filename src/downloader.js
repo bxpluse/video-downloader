@@ -69,7 +69,7 @@ function download(url){
     // Options to pass into command
     const youtubedl_path = path.dirname(store.get("youtube-dl")).split(path.sep).pop();
     const options = {
-        '-o' : getPath() + '/%(title)s',
+        '-o' : getPath() + '/%(title)s-%(id)s.%(ext)s',
         '--ffmpeg-location' : store.get("ffmpeg")
     }
 
