@@ -20,7 +20,7 @@
             <p>Url of Video: </p>
 
             <label for="urlInput">
-                <textarea id="urlInput" name="w3review" rows="6" cols="50" spellcheck="false"></textarea>
+                <textarea id="urlInput" rows="6" cols="65" spellcheck="false" oncontextmenu="pasteFromClipboard();"></textarea>
             </label>
             <br/><br/>
 
@@ -93,6 +93,11 @@
 
         function setDestination(){
             document.getElementById('output').innerText = "Output: " + getPath();
+        }
+
+        function pasteFromClipboard(){
+            document.getElementById("urlInput").value = "";
+            document.execCommand('paste');
         }
 
         (function () {
