@@ -37,6 +37,12 @@
                          </div>
                      </td>
                      <td>
+                         <label for="quality"></label><select id="quality">
+                             <option value="best">Best</option>
+                             <option value="auto">Auto</option>
+                         </select>
+                     </td>
+                     <td>
                          <span id="output"> </span>
                      </td>
                  </tr>
@@ -53,6 +59,7 @@
     <script type="text/javascript">
 
         let mp3Switch;
+        let qualityDropdown;
 
         function handleDragDropEvent(oEvent) {
             // Allow user to drag and drop url into the textarea.
@@ -84,7 +91,8 @@
                 if (res != null) {
                     console.log("Starting download ...\n");
                     const isMp3 = mp3Switch.getChecked();
-                    download(url, isMp3);
+                    const quality = qualityDropdown.value;
+                    download(url, isMp3, quality);
                 } else {
                     console.log("Url cannot be parsed. \n");
                 }
@@ -100,18 +108,30 @@
             document.execCommand('paste');
         }
 
+        function onSwtichToggle(){
+            const isMp3 = mp3Switch.getChecked();
+            if(isMp3){
+                qualityDropdown.style.display = "none";
+            } else {
+                qualityDropdown.style.display = "block";
+            }
+        }
+
         (function () {
             // Set toggle for mp3 only
             const el = document.querySelector('.checkbox-switch');
             const options = {
                 size: 'small',
                 offSwitchColor: '#785bd9',
-                onSwitchColor: '#5bd7d9'
+                onSwitchColor: '#5bd7d9',
+                onChange: onSwtichToggle,
             }
             mp3Switch = new Switch(el, options);
 
+            qualityDropdown = document.querySelector('#quality')
+
             // Hijack console.log() behaviour to reroute cmd output to textarea.
-            setDestination()
+            setDestination();
             const logger = document.getElementById('logger');
             logger.innerHTML += "Log: \n\n";
             console.log = function(message) {

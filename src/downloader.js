@@ -63,7 +63,7 @@ function selectPath(id) {
 }
 
 
-function download(url, isMp3){
+function download(url, isMp3, quality){
     /* Attempts to download a video, and streams progress to logger */
 
     // Options to pass into command
@@ -77,7 +77,9 @@ function download(url, isMp3){
         options['-x'] = null;
         options['--audio-format'] = 'mp3'
     } else {
-        options['-f'] = 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/mp4'
+        if(quality === 'best'){
+            options['-f'] = 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/mp4'
+        }
     }
 
     let command = 'youtube-dl ';
