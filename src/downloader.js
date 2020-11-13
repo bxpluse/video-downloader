@@ -1,3 +1,4 @@
+const {shell} = require('electron')
 const { dialog } = require('electron').remote
 const exec = require('child_process').exec;
 const path = require('path')
@@ -119,4 +120,11 @@ function getPath(){
 function resolvePath(file_path) {
     /* Changes all '\' to '/' to make paths consistent on different OS's*/
     return file_path.toString().replace(/\\/g, "/");
+}
+
+
+function openExplorer(){
+    shell.openPath(getPath()).then(r =>
+        console.log("Opening file explorer: " + getPath())
+    )
 }
