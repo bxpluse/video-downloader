@@ -45,6 +45,7 @@
     }
   },
   "dependencies": {
+    "electron-log": "^4.3.0",
     "electron-squirrel-startup": "^1.0.0",
     "electron-store": "^5.2.0",
     "shelljs": "^0.8.4"

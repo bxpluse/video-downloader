@@ -16,6 +16,17 @@ textarea {
   cursor: pointer;
 }
 
+#download-history {
+  font-size: 40px;
+  cursor: pointer;
+  padding-left: 2rem;
+}
+
+#download-history-secondary {
+  font-size: 20px;
+  cursor: pointer;
+}
+
 #output {
   font-size: 12px;
 }

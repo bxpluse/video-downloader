@@ -3,9 +3,12 @@ const { dialog } = require('electron').remote
 const exec = require('child_process').exec;
 const path = require('path')
 const Store = require('electron-store');
+const log = require('electron-log');
 
 const store = new Store();
 let settingsOpened = false;
+
+log.transports.console.level = false;
 
 function openSettings(){
     /* Open settings window */
@@ -94,6 +97,8 @@ function download(url, isMp3, quality){
     }
     command += url
 
+    log.info(url); // Save downloaded url history to logs
+
     const process = exec(command, {cwd: youtubedl_path}) // Send command to cmd
     console.log("Passing in the following parameters to youtube-dl:");
     console.log("---------------------------------");
@@ -126,5 +131,12 @@ function resolvePath(file_path) {
 function openExplorer(){
     shell.openPath(getPath()).then(r =>
         console.log("Opening file explorer: " + getPath())
+    )
+}
+
+function openLogs(){
+    const path = log.transports.file.getFile().toString();
+    shell.openPath(path).then(r =>
+        console.log("Opening download history: " + path)
     )
 }
