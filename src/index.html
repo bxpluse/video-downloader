@@ -13,7 +13,8 @@
 
          <span id="gear" onclick="openSettings();">&#9881;</span>
 
-         <span id="download-history" onclick="openLogs()">&#8467;</span><span id="download-history-secondary" onclick="openLogs()">ogs</span>
+         <span id="download-history" onclick="openLogs()">&#8467;</span>
+         <span id="download-history-secondary" onclick="openLogs()">ogs</span>
 
          <div ondragenter="handleDragDropEvent(event)"
              ondragover="handleDragDropEvent(event)"
@@ -22,14 +23,17 @@
             <p>Url of Video: </p>
 
             <label for="urlInput">
-                <textarea id="urlInput" rows="6" cols="65" spellcheck="false" oncontextmenu="pasteFromClipboard();"></textarea>
+                <textarea id="urlInput" rows="6" cols="65" spellcheck="false"
+                          oncontextmenu="pasteFromClipboard();"></textarea>
             </label>
             <br/><br/>
 
              <table style="width:70%">
                  <tr>
                      <td>
-                         <input type="button" id="btnDownload" value="Download" onclick="validateUrl(document.getElementById('urlInput').value)" />
+                         <input type="button" id="download-btn" value="Download"
+                                onclick="validateUrl(document.getElementById('urlInput').value)"
+                         />
                      </td>
                      <td>
                          <div>
@@ -47,10 +51,20 @@
                      <td>
                          <span id="output" onclick="openExplorer()"> </span>
                      </td>
+                     <td>
+                         <input type="button" id="args-btn" value="+"
+                                onclick="onArgsBtnToggle()"
+                         />
+                     </td>
                  </tr>
              </table>
 
-            <br/><br/>
+             <div id="args-input-div">
+                 <label for="args-input">Args: &nbsp;</label>
+                 <input type="text" id="args-input">
+             </div>
+
+            <br/>
             <label for="logger">
                 <textarea id="logger" rows="12" cols="90" spellcheck="false" disabled></textarea>
             </label>
@@ -62,6 +76,8 @@
 
         let mp3Switch;
         let qualityDropdown;
+        let argsInputDiv;
+        let argsInput;
 
         function handleDragDropEvent(oEvent) {
             // Allow user to drag and drop url into the textarea.
@@ -94,7 +110,8 @@
                     console.log("Starting download ...\n");
                     const isMp3 = mp3Switch.getChecked();
                     const quality = qualityDropdown.value;
-                    download(url, isMp3, quality);
+                    const args = argsInput.value;
+                    download(url, isMp3, quality, args);
                 } else {
                     console.log("Url cannot be parsed. \n");
                 }
@@ -110,12 +127,21 @@
             document.execCommand('paste');
         }
 
-        function onSwtichToggle(){
+        function onSwitchToggle(){
             const isMp3 = mp3Switch.getChecked();
             if(isMp3){
                 qualityDropdown.style.display = "none";
             } else {
                 qualityDropdown.style.display = "block";
+            }
+        }
+
+        function onArgsBtnToggle() {
+            if (argsInputDiv.style.display === "none") {
+                argsInputDiv.style.display = "block";
+            } else {
+                argsInputDiv.style.display = "none";
+                argsInput.value = '';
             }
         }
 
@@ -126,11 +152,14 @@
                 size: 'small',
                 offSwitchColor: '#785bd9',
                 onSwitchColor: '#5bd7d9',
-                onChange: onSwtichToggle,
+                onChange: onSwitchToggle,
             }
             mp3Switch = new Switch(el, options);
 
-            qualityDropdown = document.querySelector('#quality')
+            qualityDropdown = document.querySelector('#quality');
+            argsInputDiv = document.querySelector('#args-input-div');
+            argsInput = document.querySelector('#args-input');
+            argsInputDiv.style.display = "none";
 
             // Hijack console.log() behaviour to reroute cmd output to textarea.
             setDestination();

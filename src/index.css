@@ -30,3 +30,26 @@ textarea {
 #output {
   font-size: 12px;
 }
+
+#download-btn {
+  background-color: #089cd4;
+  border: none;
+  color: white;
+  padding: 8px 24px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+#download-btn:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+#download-btn:active  {
+  background-color: #0980ac;
+}

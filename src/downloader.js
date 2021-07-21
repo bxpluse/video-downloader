@@ -67,7 +67,7 @@ function selectPath(id) {
 }
 
 
-function download(url, isMp3, quality){
+function download(url, isMp3, quality, args){
     /* Attempts to download a video, and streams progress to logger */
 
     // Options to pass into command
@@ -95,6 +95,14 @@ function download(url, isMp3, quality){
             command += key + " " + value + " ";
         }
     }
+
+    // Add in optional arguments if provided
+    const formattedArgs = args.trim();
+    if (formattedArgs !== '') {
+        command += formattedArgs + ' ';
+    }
+
+    // Add url to command
     command += url
 
     log.info(url); // Save downloaded url history to logs
@@ -129,14 +137,14 @@ function resolvePath(file_path) {
 
 
 function openExplorer(){
-    shell.openPath(getPath()).then(r =>
+    shell.openPath(getPath()).then(() =>
         console.log("Opening file explorer: " + getPath())
     )
 }
 
 function openLogs(){
     const path = log.transports.file.getFile().toString();
-    shell.openPath(path).then(r =>
+    shell.openPath(path).then(() =>
         console.log("Opening download history: " + path)
     )
 }
