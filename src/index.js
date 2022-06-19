@@ -1,6 +1,6 @@
 const { app, BrowserWindow } = require('electron');
 const path = require('path');
-const isDev = process.env.APP_DEV ? (process.env.APP_DEV.trim() === "true") : false;
+const isDev = process.env.APP_DEV ? (process.env.APP_DEV.trim() === 'true') : false;
 if(isDev){
     require('electron-reload')(__dirname);
 }
@@ -12,7 +12,7 @@ if (require('electron-squirrel-startup')) {
 const createWindow = () => {
     // Create the browser window.
     const mainWindow = new BrowserWindow({
-        width: 800,
+        width: 850,
         height: 600,
         title: "Video Downloader",
         resizable: false,

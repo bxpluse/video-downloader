@@ -6,6 +6,7 @@
         <link rel="stylesheet" type="text/css" href="index.css">
         <link rel="stylesheet" href="lib/switch.css" />
         <script src="downloader.js"></script>
+        <script src="mode.js"></script>
         <script src="lib/switch.js"></script>
     </head>
 
@@ -32,7 +33,7 @@
                  <tr>
                      <td>
                          <input type="button" id="download-btn" value="Download"
-                                onclick="validateUrl(document.getElementById('urlInput').value)"
+                                onclick="downloadVideo(document.getElementById('urlInput').value, 'download')"
                          />
                      </td>
                      <td>
@@ -55,6 +56,12 @@
                          <input type="button" id="args-btn" value="+"
                                 onclick="onArgsBtnToggle()"
                          />
+                     </td>
+                     <td>
+                         <a href="#" id="preview-video-link"
+                            onclick="downloadVideo(document.getElementById('urlInput').value, 'open');return false;">
+                             Preview
+                         </a>
                      </td>
                  </tr>
              </table>
@@ -91,29 +98,13 @@
             }
         }
 
-        function validateUrl(url){
-            // Basic validation to check if url is valid.
-            // Attempt download video if it is an url.
-            const res = url.match(/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_+.~#?&/=]*)/g);
-
-            const Store = require('electron-store');
-            const store = new Store();
-
-            const ffmpeg = store.get("ffmpeg");
-            const ytdl = store.get("youtube-dl");
-            const dest = store.get("destination");
-
-            if(ffmpeg == null || ytdl == null || dest == null){
-                console.log("Click the gear and set all the paths.");
-            } else {
-                if (res != null) {
-                    console.log("Starting download ...\n");
+        function downloadVideo(url, mode){
+            if (isLibrarySet()) {
+                if (isUrlValid(url)) {
                     const isMp3 = mp3Switch.getChecked();
                     const quality = qualityDropdown.value;
                     const args = argsInput.value;
-                    download(url, isMp3, quality, args);
-                } else {
-                    console.log("Url cannot be parsed. \n");
+                    download(url, isMp3, quality, args, mode);
                 }
             }
         }
@@ -143,6 +134,37 @@
                 argsInputDiv.style.display = "none";
                 argsInput.value = '';
             }
+        }
+
+        function isUrlValid(url) {
+            // Basic validation to check if url is valid.
+            if (url === null || url === undefined) {
+                console.log("Url is empty. \n");
+                return false;
+            }
+
+            const found = url.match(/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_+.~#?&/=]*)/g);
+            if (!found) {
+                console.log("Url cannot be parsed. \n");
+                return false;
+            }
+            return true;
+        }
+
+        function isLibrarySet() {
+            const Store = require('electron-store');
+            const store = new Store();
+
+            const ffmpeg = store.get("ffmpeg");
+            const ytdl = store.get("youtube-dl");
+            const dest = store.get("destination");
+
+            if (ffmpeg == null || ytdl == null || dest == null) {
+                console.log("Click the gear and set all the paths.");
+                return false;
+            }
+
+            return true;
         }
 
         (function () {

@@ -50,6 +50,10 @@ textarea {
   box-shadow: none;
 }
 
-#download-btn:active  {
+#download-btn:active {
   background-color: #0980ac;
+}
+
+#preview-video-link {
+  font-size: 12px;
 }
