@@ -13,9 +13,9 @@ const createWindow = () => {
     // Create the browser window.
     const mainWindow = new BrowserWindow({
         width: 850,
-        height: 600,
+        height: 630,
         title: "Video Downloader",
-        resizable: false,
+        resizable: true,
         webPreferences: {
             nodeIntegration: true
         }

@@ -11,6 +11,8 @@ let settingsOpened = false;
 
 log.transports.console.level = false;
 
+const COMMAND_NAME = 'yt-dlp';
+
 function openSettings(){
     /* Open settings window */
 
@@ -65,7 +67,7 @@ function selectPath(id) {
 }
 
 
-function download(url, isMp3, quality, args, mode){
+function download(url, isMp3, quality, args, captions, mode){
     /* Attempts to download a video, and streams progress to logger */
 
     // Download a video or open an already downloaded video
@@ -81,7 +83,11 @@ function download(url, isMp3, quality, args, mode){
         '--ffmpeg-location' : store.get('ffmpeg')
     }
 
-    if(isMp3){
+    if (captions) {
+        options['--write-auto-sub'] = null;
+        options['--sub-lang'] = 'en';
+        options['--skip-download'] = null;
+    } else if(isMp3){
         options['-x'] = null;
         options['--audio-format'] = 'mp3'
     } else {
@@ -90,7 +96,7 @@ function download(url, isMp3, quality, args, mode){
         }
     }
 
-    let command = 'youtube-dl ';
+    let command = `${COMMAND_NAME} `;
 
     for (const [key, value] of Object.entries(options)) {
         if(value == null){

@@ -66,9 +66,22 @@
                  </tr>
              </table>
 
-             <div id="args-input-div">
-                 <label for="args-input">Args: &nbsp;</label>
-                 <input type="text" id="args-input">
+
+             <div id="args-row">
+                 <table>
+                     <tr>
+                         <td>
+                             <div id="args-input-div">
+                                 <label for="args-input">Args: &nbsp;</label>
+                                 <input type="text" id="args-input">
+                             </div>
+                         </td>
+                         <td>
+                             <input type="checkbox" id="captions-checkbox" onchange="onCheckCaptions(this)">
+                             <label for="captions-checkbox">Captions</label><br>
+                         </td>
+                     </tr>
+                 </table>
              </div>
 
             <br/>
@@ -83,8 +96,9 @@
 
         let mp3Switch;
         let qualityDropdown;
-        let argsInputDiv;
+        let argsDiv;
         let argsInput;
+        let captionsCheckbox;
 
         function handleDragDropEvent(oEvent) {
             // Allow user to drag and drop url into the textarea.
@@ -104,7 +118,8 @@
                     const isMp3 = mp3Switch.getChecked();
                     const quality = qualityDropdown.value;
                     const args = argsInput.value;
-                    download(url, isMp3, quality, args, mode);
+                    const captions = captionsCheckbox.checked;
+                    download(url, isMp3, quality, args, captions, mode);
                 }
             }
         }
@@ -128,11 +143,21 @@
         }
 
         function onArgsBtnToggle() {
-            if (argsInputDiv.style.display === "none") {
-                argsInputDiv.style.display = "block";
+            if (argsDiv.style.display === "none") {
+                argsDiv.style.display = "block";
             } else {
-                argsInputDiv.style.display = "none";
+                argsDiv.style.display = "none";
                 argsInput.value = '';
+            }
+        }
+
+        function onCheckCaptions(checkbox) {
+            if (checkbox.checked) {
+                argsInput.value = '';
+                argsInput.disabled = true;
+            } else {
+                argsDiv.style.display = "block";
+                argsInput.disabled = false;
             }
         }
 
@@ -179,9 +204,10 @@
             mp3Switch = new Switch(el, options);
 
             qualityDropdown = document.querySelector('#quality');
-            argsInputDiv = document.querySelector('#args-input-div');
+            argsDiv = document.querySelector('#args-row');
             argsInput = document.querySelector('#args-input');
-            argsInputDiv.style.display = "none";
+            captionsCheckbox = document.querySelector('#captions-checkbox');
+            argsDiv.style.display = "none";
 
             // Hijack console.log() behaviour to reroute cmd output to textarea.
             setDestination();

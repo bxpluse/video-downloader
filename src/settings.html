@@ -8,6 +8,10 @@
     </head>
 
     <body>
+        <div>
+            <p id="version-text">Version: N/A</p>
+        </div>
+
         <div class="path">
             <span>FFmpeg Path:</span>
             <input type="text" id="ffmpeg" size="30" disabled>
@@ -16,7 +20,7 @@
         </div>
 
         <div class="path">
-            <span>Youtube-dl Path:</span>
+            <span>yt-dlp Path:</span>
             <input type="text" id="youtube-dl" size="30" disabled>
             <input type="button" id="btnYoutubedl" value="Set Path" onclick="selectPath('youtube-dl')" />
             <br/>
@@ -42,6 +46,11 @@
             function onset(id, path) {
                 document.getElementById(id).value = path;
             }
+
+            (function () {
+                const version = require('root-require')('package.json').version;
+                document.querySelector('#version-text').innerHTML  = `Version: ${version}`;
+            })();
 
         </script>
 
